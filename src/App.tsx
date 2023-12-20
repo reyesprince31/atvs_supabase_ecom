@@ -7,15 +7,13 @@ import PageNotFound from "./_root/pages/PageNotFound";
 
 export default function App() {
   return (
-    <main className="flex h-screen">
-      <Routes>
+    <Routes>
+      <Route element={<RootLayout />}>
         <Route index element={<Navigate to="dashboard" />} />
-        <Route element={<RootLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="products" element={<ProductList />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Route>
-      </Routes>
-    </main>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="products" element={<ProductList />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Route>
+    </Routes>
   );
 }
