@@ -13,3 +13,15 @@ export const getProducts = async () => {
     console.log(error);
   }
 };
+
+export const getFlavors = async () => {
+  try {
+    const { data: Flavors, error } = await supabase.from("Flavors").select("*");
+
+    if (error) throw Error;
+
+    return Flavors;
+  } catch (error) {
+    console.log(error);
+  }
+};
