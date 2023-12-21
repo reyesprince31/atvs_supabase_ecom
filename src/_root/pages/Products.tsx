@@ -1,11 +1,13 @@
-import Loader from "@/components/shared/Loader";
-import { useGetProducts } from "@/lib/react-query/queries";
+import Breadcrumb from "@/components/shared/Breadcrumb";
+import ProductList from "@/components/shared/products/ProductList";
 
 export default function Products() {
-  const { data: products, isLoading } = useGetProducts();
-
-  if (isLoading) return <Loader />;
-
-  console.log(products);
-  return <div>ProductList</div>;
+  return (
+    <>
+      <Breadcrumb pageName="Products" />
+      <div className="flex flex-col gap-10">
+        <ProductList />
+      </div>
+    </>
+  );
 }
