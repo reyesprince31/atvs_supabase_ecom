@@ -4,7 +4,7 @@ import { TableRow, TableCell } from "@/components/ui/table";
 import { useDeleteProduct } from "@/lib/react-query/queries";
 import { formatCurrency } from "@/lib/utils";
 import { VapeProduct } from "@/types";
-import { Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 type ProductRowProps = {
@@ -13,6 +13,7 @@ type ProductRowProps = {
 
 const ProductRow: React.FC<ProductRowProps> = ({ product }) => {
   const { toast } = useToast();
+
   const { id, model_name, puffs_count, supplier_price, regular_price } =
     product;
 
@@ -34,13 +35,22 @@ const ProductRow: React.FC<ProductRowProps> = ({ product }) => {
         {formatCurrency(regular_price)}
       </TableCell>
       <TableCell>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={handleDelete}
-          disabled={isPending}>
-          <Trash2 className="h-4 w-4" />
-        </Button>
+        <div className="flex gap-2 justify-end">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => {}}
+            disabled={isPending}>
+            <Edit className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleDelete}
+            disabled={isPending}>
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
       </TableCell>
     </TableRow>
   );

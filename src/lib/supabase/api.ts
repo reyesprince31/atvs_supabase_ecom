@@ -1,3 +1,4 @@
+import { VapeProduct } from "@/types";
 import supabase from "./config";
 
 export const getProducts = async () => {
@@ -34,6 +35,21 @@ export const deleteProduct = async (product_id: number) => {
       .eq("id", product_id);
 
     if (error) throw Error;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createProduct = async (newProduct: VapeProduct) => {
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .insert([newProduct])
+      .select();
+
+    if (error) throw Error;
+
+    return data;
   } catch (error) {
     console.log(error);
   }

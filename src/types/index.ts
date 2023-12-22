@@ -5,7 +5,7 @@ export type IFlavor = {
 };
 
 export type VapeProduct = {
-  id: number;
+  id?: number;
   model_name: string;
   puffs_count: number;
   supplier_price: number;
