@@ -1,10 +1,11 @@
+import { VapeProduct } from "@/types";
 import supabase from "./config";
 
 export const getProducts = async () => {
   try {
     const { data: Products, error } = await supabase
-      .from("products")
-      .select(`*`);
+      .from("Products")
+      .select("*");
 
     if (error) throw Error;
 
@@ -16,7 +17,7 @@ export const getProducts = async () => {
 
 export const getFlavors = async () => {
   try {
-    const { data: Flavors, error } = await supabase.from("flavors").select("*");
+    const { data: Flavors, error } = await supabase.from("Flavors").select("*");
 
     if (error) throw Error;
 
@@ -26,14 +27,43 @@ export const getFlavors = async () => {
   }
 };
 
+export const getCategory = async () => {
+  try {
+    const { data: Category, error } = await supabase
+      .from("Category")
+      .select("*");
+
+    if (error) throw Error;
+
+    return Category;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const deleteProduct = async (product_id: number) => {
   try {
     const { error } = await supabase
-      .from("products")
+      .from("Products")
       .delete()
       .eq("id", product_id);
 
     if (error) throw Error;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createProduct = async (newProduct: VapeProduct) => {
+  try {
+    const { data, error } = await supabase
+      .from("Products")
+      .insert([newProduct])
+      .select();
+
+    if (error) throw Error;
+
+    return data;
   } catch (error) {
     console.log(error);
   }
