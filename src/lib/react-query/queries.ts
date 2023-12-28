@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createProduct,
   deleteProduct,
+  getCategory,
   getFlavors,
   getProducts,
 } from "../supabase/api";
@@ -18,6 +19,13 @@ export const useGetFlavors = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_FLAVORS],
     queryFn: getFlavors,
+  });
+};
+
+export const useGetCategory = () => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_CATEGORY],
+    queryFn: getCategory,
   });
 };
 

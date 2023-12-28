@@ -32,16 +32,15 @@ const ProductForm = () => {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof CreateProductValidation>) {
-    const { model_name, puffs_count, supplier_price, regular_price } = values;
+    console.log(values);
 
-    const newProduct = {
-      model_name,
-      puffs_count: Number(puffs_count),
-      supplier_price: Number(supplier_price),
-      regular_price: Number(regular_price),
-    };
-
-    createNewProduct(newProduct);
+    // createNewProduct({
+    //   ...values,
+    //   model_name,
+    //   puffs_count: Number(puffs_count),
+    //   supplier_price: Number(supplier_price),
+    //   regular_price: Number(regular_price),
+    // });
   }
   return (
     <Form {...form}>
