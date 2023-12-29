@@ -28,7 +28,7 @@ export function FlavorSelect({ field }: FlavorSelectProps) {
       <SelectContent>
         <SelectGroup>
           {getFlavor?.map((item) => (
-            <SelectItem key={item.flavorid} value={item.flavorid.toString()}>
+            <SelectItem key={item.flavorid} value={item.name}>
               {item.name}
             </SelectItem>
           ))}

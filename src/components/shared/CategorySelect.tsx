@@ -21,14 +21,14 @@ export function CategorySelect({ field }: CategorySelectProps) {
   if (isLoading) return;
 
   return (
-    <Select onValueChange={field.onChange}>
+    <Select onValueChange={field.onChange} defaultValue={field.value}>
       <SelectTrigger className="w-full">
         <SelectValue placeholder="Select a category" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           {getCategory?.map((item) => (
-            <SelectItem key={item.id} value={item.id.toString()}>
+            <SelectItem key={item.id} value={item.categoryName}>
               {item.categoryName}
             </SelectItem>
           ))}
