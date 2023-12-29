@@ -41,12 +41,12 @@ export const getCategory = async () => {
   }
 };
 
-export const deleteProduct = async (product_id: number) => {
+export const deleteProduct = async (productid: number) => {
   try {
     const { error } = await supabase
       .from("Products")
       .delete()
-      .eq("id", product_id);
+      .eq("productid", productid);
 
     if (error) throw Error;
   } catch (error) {

@@ -21,13 +21,11 @@ const ProductRow = ({
   const { mutate: deleteProduct, isPending } = useDeleteProduct();
 
   const handleDelete = () => {
-    // deleteProduct(+product?.productid);
-    toast({ title: "Deleted Succesfully" });
+    if (product.productid) {
+      deleteProduct(product.productid);
+      toast({ title: "Deleted Succesfully" });
+    }
   };
-
-  // console.log("prod: ", product);
-  // console.log("cat: ", category);
-  // console.log("flav: ", flavor);
 
   return (
     <TableRow>
