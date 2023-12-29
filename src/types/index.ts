@@ -14,9 +14,11 @@ export type VapeProduct = {
 };
 
 export type IProduct = {
-  productid: number;
-  name: string;
+  productid?: number;
+  productName: string;
   description: string;
+  categoryid?: number;
+  flavorid?: number;
 };
 
 export type ICategory = {

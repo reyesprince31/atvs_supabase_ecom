@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+import { CreateProductValidation } from "@/lib/validation";
+import { useCreateProduct } from "@/lib/react-query/queries";
+
 import {
   Form,
   FormField,
@@ -13,8 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { CreateProductValidation } from "@/lib/validation";
-import { useCreateProduct } from "@/lib/react-query/queries";
+import { FlavorSelect } from "../shared/FlavorSelect";
+import { CategorySelect } from "../shared/CategorySelect";
 
 const ProductForm = () => {
   const { mutate: createNewProduct, isPending } = useCreateProduct();
@@ -23,31 +26,32 @@ const ProductForm = () => {
   const form = useForm<z.infer<typeof CreateProductValidation>>({
     resolver: zodResolver(CreateProductValidation),
     defaultValues: {
-      model_name: "",
-      puffs_count: "",
-      supplier_price: "",
-      regular_price: "",
+      productName: "",
+      description: "",
+      category: "",
+      flavor: "",
     },
   });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof CreateProductValidation>) {
-    console.log(values);
+    const newProduct = {
+      productName: values.productName,
+      description: values.description,
+      categoryid: +values.category,
+      flavorid: +values.flavor,
+    };
 
-    // createNewProduct({
-    //   ...values,
-    //   model_name,
-    //   puffs_count: Number(puffs_count),
-    //   supplier_price: Number(supplier_price),
-    //   regular_price: Number(regular_price),
-    // });
+    createNewProduct({
+      ...newProduct,
+    });
   }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="model_name"
+          name="productName"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Product name</FormLabel>
@@ -61,10 +65,10 @@ const ProductForm = () => {
         />
         <FormField
           control={form.control}
-          name="puffs_count"
+          name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Puffs</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -75,26 +79,22 @@ const ProductForm = () => {
         />
         <FormField
           control={form.control}
-          name="supplier_price"
+          name="category"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Supplier Price</FormLabel>
-              <FormControl>
-                <Input type="number" {...field} />
-              </FormControl>
-
-              <FormMessage />
+              <FormLabel>Category</FormLabel>
+              <CategorySelect field={field} />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name="regular_price"
+          name="flavor"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Regular Price</FormLabel>
+              <FormLabel>Flavor</FormLabel>
               <FormControl>
-                <Input type="number" {...field} />
+                <FlavorSelect field={field} />
               </FormControl>
 
               <FormMessage />

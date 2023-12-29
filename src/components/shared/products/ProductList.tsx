@@ -27,8 +27,6 @@ const ProductList = () => {
   if (isProductsLoading && isFlavorsLoading && isCategoryLoading)
     return <Loader />;
 
-  console.log("cat: ", category);
-
   const allProducts = products?.map((product) => {
     const filteredFlavor = flavors?.find(
       (flavor) => flavor.flavorid === product.flavorid
@@ -44,8 +42,6 @@ const ProductList = () => {
 
     return flavoredProduct;
   });
-
-  console.log(allProducts);
 
   return (
     <>
