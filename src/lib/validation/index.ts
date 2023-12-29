@@ -19,10 +19,13 @@ export const SigninValidation = z.object({
 });
 
 export const CreateProductValidation = z.object({
-  model_name: z
+  productName: z
     .string()
     .min(2, { message: "Name must be atleast 2 characters." }),
-  puffs_count: z.string(),
-  supplier_price: z.string(),
-  regular_price: z.string(),
+  description: z
+    .string()
+    .min(3, { message: "description must be atleast 3 characters." })
+    .max(2500, { message: "Maximum of 2500 characters" }),
+  category: z.string(),
+  flavor: z.string(),
 });
