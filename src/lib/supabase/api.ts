@@ -55,10 +55,32 @@ export const deleteProduct = async (productid: number) => {
 };
 
 export const createProduct = async (newProduct: IProduct) => {
+  console.log(newProduct);
   try {
     const { data: NewProduct, error } = await supabase
       .from("Products")
       .insert([newProduct])
+      .select();
+
+    if (error) throw Error;
+
+    return NewProduct;
+  } catch (error) {
+    console.log(error, "ayaw");
+  }
+};
+
+export const updateProduct = async (
+  newProduct: IProduct,
+  id: number | undefined
+) => {
+  console.log(newProduct, id);
+
+  try {
+    const { data: NewProduct, error } = await supabase
+      .from("Products")
+      .update([newProduct])
+      .eq("productid", id)
       .select();
 
     if (error) throw Error;
