@@ -24,10 +24,11 @@ import {
 import { FlavorSelect } from "../shared/FlavorSelect";
 import { CategorySelect } from "../shared/CategorySelect";
 import { Dispatch } from "react";
+import { IProduct } from "@/types";
 
 interface PropsEdit {
-  product: { productid?: number; productName: string; description: string };
-  category: { categoryName?: string };
+  product: IProduct;
+  category: { categoryName: string };
   flavor: { name: string };
 }
 
@@ -41,10 +42,8 @@ const ProductForm = ({
   const { mutate: createNewProduct, isPending: isCreating } =
     useCreateProduct();
   const { mutate: updateNewProduct, isPending: isEditing } = useEditProduct();
-
   const { data: flavors } = useGetFlavors();
   const { data: categories } = useGetCategory();
-
   const isWorking = isCreating || isEditing;
 
   // 1. Define your form.
@@ -63,17 +62,19 @@ const ProductForm = ({
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof CreateProductValidation>) {
     try {
-      const foundCategory = categories?.find(
-        (item) => item.categoryName === values.category
-      );
+      const { category, flavor, productName, description } = values;
 
-      const foundFlavor = flavors?.find((item) => item.name === values.flavor);
+      const categoryId = categories?.find(
+        (item) => item.categoryName === category
+      ).id;
+
+      const flavorId = flavors?.find((item) => item.name === flavor).flavorid;
 
       const newProduct = {
-        productName: values.productName,
-        description: values.description,
-        categoryid: values.category ? foundCategory.id : undefined,
-        flavorid: values.flavor ? foundFlavor.flavorid : undefined,
+        productName,
+        description,
+        categoryid: category ? categoryId : undefined,
+        flavorid: flavor ? flavorId : undefined,
       };
 
       if (editProduct) {
@@ -150,9 +151,18 @@ const ProductForm = ({
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={isWorking}>
-            {editProduct ? "Update" : "Create"}
-          </Button>
+          <div className="w-full flex justify-end gap-2">
+            <Button type="submit" disabled={isWorking}>
+              {editProduct ? "Update" : "Create"}
+            </Button>
+            <Button
+              type="reset"
+              variant="outline"
+              onClick={() => setShowForm(false)}
+              disabled={isWorking}>
+              Cancel
+            </Button>
+          </div>
         </form>
       </Form>
     </>

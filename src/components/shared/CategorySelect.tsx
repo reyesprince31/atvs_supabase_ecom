@@ -3,10 +3,12 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { useGetCategory } from "@/lib/react-query/queries";
+import { Button } from "../ui/button";
 
 interface CategorySelectProps {
   field: {
@@ -32,6 +34,8 @@ export function CategorySelect({ field }: CategorySelectProps) {
               {item.categoryName}
             </SelectItem>
           ))}
+          <SelectSeparator />
+          <Button variant="ghost">Add</Button>
         </SelectGroup>
       </SelectContent>
     </Select>

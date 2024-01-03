@@ -4,6 +4,7 @@ import RootLayout from "./_root/RootLayout";
 import Dashboard from "./_root/pages/Dashboard";
 import Products from "./_root/pages/Products";
 import PageNotFound from "./_root/pages/PageNotFound";
+import Flavors from "./_root/pages/Flavors";
 
 import { Toaster } from "@/components/ui/toaster";
 
@@ -17,6 +18,7 @@ export default function App() {
           <Route index element={<Navigate to="dashboard" />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="products" element={<Products />} />
+          <Route path="flavors" element={<Flavors />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
