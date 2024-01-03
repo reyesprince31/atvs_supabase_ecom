@@ -7,6 +7,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetFlavors } from "@/lib/react-query/queries";
+import { SelectSeparator } from "@radix-ui/react-select";
+import { Button } from "../ui/button";
 
 interface FlavorSelectProps {
   field: {

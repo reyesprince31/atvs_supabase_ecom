@@ -17,8 +17,8 @@ export type IProduct = {
   productid?: number;
   productName: string;
   description: string;
-  categoryid?: number;
-  flavorid?: number;
+  categoryid: number;
+  flavorid: number;
 };
 
 export type ICategory = {
