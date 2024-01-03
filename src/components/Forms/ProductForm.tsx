@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { CreateProductValidation } from "@/lib/validation";
+import { ProductValidation } from "@/lib/validation";
 import {
   useCreateProduct,
   useEditProduct,
@@ -44,11 +44,12 @@ const ProductForm = ({
   const { mutate: updateNewProduct, isPending: isEditing } = useEditProduct();
   const { data: flavors } = useGetFlavors();
   const { data: categories } = useGetCategory();
+
   const isWorking = isCreating || isEditing;
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof CreateProductValidation>>({
-    resolver: zodResolver(CreateProductValidation),
+  const form = useForm<z.infer<typeof ProductValidation>>({
+    resolver: zodResolver(ProductValidation),
     defaultValues: {
       productName: editProduct ? editProduct.product.productName : "",
       description: editProduct ? editProduct.product.description : "",
@@ -60,7 +61,7 @@ const ProductForm = ({
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof CreateProductValidation>) {
+  async function onSubmit(values: z.infer<typeof ProductValidation>) {
     try {
       const { category, flavor, productName, description } = values;
 
@@ -89,6 +90,7 @@ const ProductForm = ({
           ...newProduct,
         });
 
+        form.reset();
         setShowForm(false);
       }
     } catch (error) {
@@ -151,6 +153,7 @@ const ProductForm = ({
               </FormItem>
             )}
           />
+
           <div className="w-full flex justify-end gap-2">
             <Button type="submit" disabled={isWorking}>
               {editProduct ? "Update" : "Create"}

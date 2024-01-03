@@ -1,5 +1,6 @@
 import { IProduct } from "@/types";
 import supabase from "./config";
+import { TFlavors } from "@/components/shared/flavors/columns";
 
 export const getProducts = async () => {
   try {
@@ -15,15 +16,16 @@ export const getProducts = async () => {
   }
 };
 
-export const getFlavors = async () => {
+export const getFlavors = async (): Promise<TFlavors[] | undefined> => {
   try {
     const { data: Flavors, error } = await supabase.from("Flavors").select("*");
 
-    if (error) throw Error;
+    if (error) throw new Error("Error fetching flavors");
 
     return Flavors;
   } catch (error) {
     console.log(error);
+    return undefined;
   }
 };
 
