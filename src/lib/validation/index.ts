@@ -18,14 +18,21 @@ export const SigninValidation = z.object({
     .min(8, { message: "Password must be at least 8 characters." }),
 });
 
-export const CreateProductValidation = z.object({
-  productName: z
+export const ProductValidation = z.object({
+  product_name: z
     .string()
     .min(2, { message: "Name must be atleast 2 characters." }),
   description: z
     .string()
     .min(3, { message: "description must be atleast 3 characters." })
     .max(2500, { message: "Maximum of 2500 characters" }),
-  category: z.string().min(2),
-  flavor: z.string().min(2),
+  category_name: z.string().min(2),
+  flavor_name: z.string().min(2),
+});
+
+export const FlavorValidation = z.object({
+  name: z.string().min(2, { message: "Name must be atleast 2 characters." }),
+  quantity: z.number(),
+  price: z.number(),
+  imageurl: z.string(),
 });

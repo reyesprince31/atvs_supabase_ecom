@@ -7,8 +7,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetFlavors } from "@/lib/react-query/queries";
-import { SelectSeparator } from "@radix-ui/react-select";
-import { Button } from "../ui/button";
 
 interface FlavorSelectProps {
   field: {
@@ -30,8 +28,8 @@ export function FlavorSelect({ field }: FlavorSelectProps) {
       <SelectContent>
         <SelectGroup>
           {getFlavor?.map((item) => (
-            <SelectItem key={item.flavorid} value={item.name}>
-              {item.name}
+            <SelectItem key={item.flavor_id} value={item.flavor_name}>
+              {item.flavor_name}
             </SelectItem>
           ))}
         </SelectGroup>

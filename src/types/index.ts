@@ -14,23 +14,25 @@ export type VapeProduct = {
 };
 
 export type IProduct = {
-  productid?: number;
-  productName: string;
+  product_id?: number;
+  product_name: string;
   description: string;
-  categoryid: number;
-  flavorid: number;
+  flavor_id: number | undefined;
+  category_id: number | undefined;
 };
 
 export type ICategory = {
-  id: number;
-  categoryName: string;
-  puffsCount?: number;
+  category_id: number;
+  category_name: string;
+  puffs_count: number;
+  cost_price: number;
+  sale_price: number;
 };
 
 export type IFlavor = {
-  flavorid?: number;
-  name: string;
-  stockquantity: number;
-  price: number;
-  imageurl: string;
+  flavor_id: number;
+  flavor_name: string;
+  description: string;
+  image_url: string;
+  flavor_qty: number;
 };

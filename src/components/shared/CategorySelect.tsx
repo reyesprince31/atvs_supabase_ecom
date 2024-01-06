@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetCategory } from "@/lib/react-query/queries";
-import { Button } from "../ui/button";
 
 interface CategorySelectProps {
   field: {
@@ -30,12 +29,13 @@ export function CategorySelect({ field }: CategorySelectProps) {
       <SelectContent>
         <SelectGroup>
           {getCategory?.map((item) => (
-            <SelectItem key={item.id} value={item.categoryName}>
-              {item.categoryName}
+            <SelectItem key={item.category_id} value={item.category_name}>
+              {item.category_name}
             </SelectItem>
           ))}
+
           <SelectSeparator />
-          <Button variant="ghost">Add</Button>
+          <SelectItem value="add">Add Category</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
