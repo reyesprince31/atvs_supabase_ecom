@@ -1,22 +1,21 @@
-import { IProduct } from "@/types";
+import { ICategory, IFlavor, IProduct } from "@/types";
 import supabase from "./config";
-import { TFlavors } from "@/components/shared/flavors/columns";
 
-export const getProducts = async () => {
+export const getProducts = async (): Promise<IProduct[] | undefined> => {
   try {
     const { data: Products, error } = await supabase
       .from("Products")
       .select("*");
 
-    if (error) throw Error;
+    if (error) throw error;
 
-    return Products;
+    return Products as IProduct[];
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getFlavors = async (): Promise<TFlavors[] | undefined> => {
+export const getFlavors = async (): Promise<IFlavor[] | undefined> => {
   try {
     const { data: Flavors, error } = await supabase.from("Flavors").select("*");
 
@@ -25,11 +24,10 @@ export const getFlavors = async (): Promise<TFlavors[] | undefined> => {
     return Flavors;
   } catch (error) {
     console.log(error);
-    return undefined;
   }
 };
 
-export const getCategory = async () => {
+export const getCategory = async (): Promise<ICategory[] | undefined> => {
   try {
     const { data: Category, error } = await supabase
       .from("Category")
@@ -43,12 +41,12 @@ export const getCategory = async () => {
   }
 };
 
-export const deleteProduct = async (productid: number) => {
+export const deleteProduct = async (id: number) => {
   try {
     const { error } = await supabase
       .from("Products")
       .delete()
-      .eq("productid", productid);
+      .eq("product_id", id);
 
     if (error) throw Error;
   } catch (error) {
@@ -82,7 +80,7 @@ export const updateProduct = async (
     const { data: NewProduct, error } = await supabase
       .from("Products")
       .update([newProduct])
-      .eq("productid", id)
+      .eq("product_id", id)
       .select();
 
     if (error) throw Error;

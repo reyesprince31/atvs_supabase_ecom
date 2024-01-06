@@ -23,11 +23,21 @@ const ProductRow = ({
   const [showForm, setShowForm] = useState(false);
   const { mutate: deleteProduct, isPending: isDeleting } = useDeleteProduct();
 
-  const alldata = { product, category, flavor };
+  const { product_id, product_name, description } = product;
+  const { category_id, category_name, cost_price, sale_price } = category;
+  const { flavor_id, flavor_name, flavor_qty, image_url } = flavor;
+
+  const editData = {
+    product_id,
+    product_name,
+    description,
+    flavor_name,
+    category_name,
+  };
 
   const handleDelete = () => {
-    if (product.productid) {
-      deleteProduct(product.productid);
+    if (product.product_id) {
+      deleteProduct(product.product_id);
     }
   };
 
@@ -39,34 +49,25 @@ const ProductRow = ({
         <TableCell className="font-medium">
           <div className="lg:flex lg:items-center lg:gap-4">
             <img
-              src={
-                flavor?.imageurl
-                  ? flavor?.imageurl
-                  : "src/images/product/product-01.png"
-              }
+              src={image_url ? image_url : "/images/product/product-01.png"}
               alt="product-image"
               width={50}
               height={50}
             />
-            <div className="flex items-center gap-3">{product.productName}</div>
+            <div className="flex items-center gap-3">{product_name}</div>
           </div>
         </TableCell>
-        <TableCell>{product.description}</TableCell>
+        <TableCell>{description}</TableCell>
         <TableCell>
-          {category?.categoryName ? (
-            category?.categoryName
-          ) : (
-            <span>&mdash;</span>
-          )}
+          {category_id ? category_name : <span>&mdash;</span>}
         </TableCell>
-        <TableCell>
-          {flavor?.name ? flavor?.name : <span>&mdash;</span>}
-        </TableCell>
-        <TableCell>
-          {flavor?.stockquantity ? flavor?.stockquantity : <span>&mdash;</span>}
+        <TableCell>{flavor_id ? flavor_name : <span>&mdash;</span>}</TableCell>
+        <TableCell>{flavor_id ? flavor_qty : <span>&mdash;</span>}</TableCell>
+        <TableCell className="text-green-500">
+          {category_id ? formatCurrency(cost_price) : <span>&mdash;</span>}
         </TableCell>
         <TableCell className="text-green-500">
-          {flavor?.price ? formatCurrency(flavor?.price) : <span>&mdash;</span>}
+          {category_id ? formatCurrency(sale_price) : <span>&mdash;</span>}
         </TableCell>
         <TableCell>
           <div className="flex gap-2 justify-end">
@@ -89,7 +90,7 @@ const ProductRow = ({
       {showForm && (
         <TableRow>
           <TableCell colSpan={7}>
-            <ProductForm editProduct={alldata} setShowForm={setShowForm} />
+            <ProductForm editProduct={editData} setShowForm={setShowForm} />
           </TableCell>
         </TableRow>
       )}

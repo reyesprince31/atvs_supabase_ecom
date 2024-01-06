@@ -24,12 +24,13 @@ import {
 import { FlavorSelect } from "../shared/FlavorSelect";
 import { CategorySelect } from "../shared/CategorySelect";
 import { Dispatch } from "react";
-import { IProduct } from "@/types";
 
 interface PropsEdit {
-  product: IProduct;
-  category: { categoryName: string };
-  flavor: { name: string };
+  product_id?: number;
+  product_name: string;
+  description: string;
+  category_name: string;
+  flavor_name: string;
 }
 
 const ProductForm = ({
@@ -45,54 +46,56 @@ const ProductForm = ({
   const { data: flavors } = useGetFlavors();
   const { data: categories } = useGetCategory();
 
+  console.log(editProduct);
+
   const isWorking = isCreating || isEditing;
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof ProductValidation>>({
     resolver: zodResolver(ProductValidation),
-    defaultValues: {
-      productName: editProduct ? editProduct.product.productName : "",
-      description: editProduct ? editProduct.product.description : "",
-      category: editProduct?.category?.categoryName
-        ? editProduct.category.categoryName
-        : "",
-      flavor: editProduct?.flavor?.name ? editProduct.flavor.name : "",
-    },
+    defaultValues: editProduct
+      ? {
+          ...editProduct,
+        }
+      : {},
   });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof ProductValidation>) {
+    // console.log(values);
     try {
-      const { category, flavor, productName, description } = values;
+      const { category_name, flavor_name, product_name, description } = values;
 
       const categoryId = categories?.find(
-        (item) => item.categoryName === category
-      ).id;
+        (item) => item.category_name === category_name
+      )?.category_id;
 
-      const flavorId = flavors?.find((item) => item.name === flavor).flavorid;
+      const flavorId = flavors?.find(
+        (item) => item.flavor_name === flavor_name
+      )?.flavor_id;
 
       const newProduct = {
-        productName,
+        product_name,
         description,
-        categoryid: category ? categoryId : undefined,
-        flavorid: flavor ? flavorId : undefined,
+        flavor_id: flavorId,
+        category_id: categoryId,
       };
+
+      // console.log(newProduct);
 
       if (editProduct) {
         updateNewProduct({
           newProduct: { ...newProduct },
-          id: editProduct.product.productid,
+          id: editProduct.product_id,
         });
 
         setShowForm(false);
       } else {
-        createNewProduct({
-          ...newProduct,
-        });
-
-        form.reset();
-        setShowForm(false);
+        createNewProduct({ ...newProduct });
       }
+
+      form.reset();
+      setShowForm(false);
     } catch (error) {
       console.log(error);
     }
@@ -103,7 +106,7 @@ const ProductForm = ({
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="productName"
+            name="product_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Product name</FormLabel>
@@ -131,17 +134,7 @@ const ProductForm = ({
           />
           <FormField
             control={form.control}
-            name="category"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Category</FormLabel>
-                <CategorySelect field={field} />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="flavor"
+            name="flavor_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Flavor</FormLabel>
@@ -150,6 +143,17 @@ const ProductForm = ({
                 </FormControl>
 
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="category_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+
+                <CategorySelect field={field} />
               </FormItem>
             )}
           />

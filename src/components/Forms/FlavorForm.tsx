@@ -6,24 +6,25 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import console from "console";
 
-export default function FlavorForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-    },
+import { FlavorValidation } from "@/lib/validation";
+import { TFlavors } from "../shared/flavors/FlavorRow";
+
+export default function FlavorForm({ data }: { data: TFlavors }) {
+  const form = useForm<z.z.infer<typeof FlavorValidation>>({
+    resolver: zodResolver(FlavorValidation),
+    defaultValues: data ? data : {},
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  console.log(data);
+
+  function onSubmit(values: z.infer<typeof FlavorValidation>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
@@ -34,16 +35,14 @@ export default function FlavorForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="username"
+          name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Flavor</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+
               <FormMessage />
             </FormItem>
           )}
