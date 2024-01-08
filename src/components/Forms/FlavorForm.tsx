@@ -1,8 +1,10 @@
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { FlavorValidation } from "@/lib/validation";
+
 import {
   Form,
   FormControl,
@@ -11,23 +13,39 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { useCreateFlavor } from "@/lib/react-query/queries";
+import FileUploader from "../shared/FileUploader";
 
-import { FlavorValidation } from "@/lib/validation";
-import { TFlavors } from "../shared/flavors/FlavorRow";
+// import { TFlavors } from "../shared/flavors/FlavorRow";
 
-export default function FlavorForm({ data }: { data: TFlavors }) {
+export default function FlavorForm() {
+  const { mutateAsync: createFlavor, isPending } = useCreateFlavor();
+
   const form = useForm<z.z.infer<typeof FlavorValidation>>({
     resolver: zodResolver(FlavorValidation),
-    defaultValues: data ? data : {},
+    defaultValues: {
+      image_url: [],
+      flavor_name: "",
+      description: "",
+      flavor_qty: "",
+    },
   });
 
-  console.log(data);
-
   function onSubmit(values: z.infer<typeof FlavorValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    // console.log(values);
+
+    const { flavor_qty } = values;
+    try {
+      const newFlavor = {
+        ...values,
+
+        flavor_qty: +flavor_qty,
+      };
+
+      createFlavor({ ...newFlavor });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -35,10 +53,24 @@ export default function FlavorForm({ data }: { data: TFlavors }) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="name"
+          name="image_url"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Flavor</FormLabel>
+              <FormLabel>Image Url</FormLabel>
+              <FormControl>
+                <FileUploader fieldChange={field.onChange} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="flavor_name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Flavor name</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -47,7 +79,37 @@ export default function FlavorForm({ data }: { data: TFlavors }) {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="flavor_qty"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Quantity</FormLabel>
+              <FormControl>
+                <Input type="number" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" disabled={isPending}>
+          Create
+        </Button>
       </form>
     </Form>
   );

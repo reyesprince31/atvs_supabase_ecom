@@ -1,4 +1,5 @@
 import ProductRow from "./ProductRow";
+import Loader from "../Loader";
 
 import {
   Table,
@@ -21,6 +22,8 @@ const ProductTable = () => {
 
   const isLoading = isProductsLoading && isFlavorsLoading && isCategoryLoading;
 
+  if (isLoading) return <Loader />;
+
   const product = products?.map((product) => {
     const flavor = flavors?.find(
       (flavor) => flavor.flavor_id === product.flavor_id
@@ -29,17 +32,14 @@ const ProductTable = () => {
       (category) => category.category_id === product.category_id
     );
 
-    const show_product = {
+    return {
       ...product,
       flavor: {
         ...flavor,
       },
       category: { ...category },
     };
-    return show_product;
   });
-
-  // console.log("product: ", product);
 
   return (
     <Table>

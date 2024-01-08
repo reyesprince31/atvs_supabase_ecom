@@ -9,18 +9,21 @@ import { ICategory, IFlavor, IProduct } from "@/types";
 import ProductForm from "@/components/Forms/ProductForm";
 import Loader from "../Loader";
 
-const ProductRow = ({
-  product,
-  category,
-  flavor,
-  isLoading,
-}: {
+interface ProductRowProps {
   product: IProduct;
   category: ICategory;
   flavor: IFlavor;
   isLoading: boolean;
+}
+
+const ProductRow: React.FC<ProductRowProps> = ({
+  product,
+  category,
+  flavor,
+  isLoading,
 }) => {
   const [showForm, setShowForm] = useState(false);
+
   const { mutate: deleteProduct, isPending: isDeleting } = useDeleteProduct();
 
   const { product_id, product_name, description } = product;

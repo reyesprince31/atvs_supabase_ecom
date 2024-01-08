@@ -1,21 +1,20 @@
-import { ICategory, IFlavor, IProduct } from "@/types";
-import supabase from "./config";
+import { IFlavor, IProduct } from "@/types";
+import supabase, { supabaseUrl } from "./config";
 
-export const getProducts = async (): Promise<IProduct[] | undefined> => {
+export const getProducts = async () => {
   try {
     const { data: Products, error } = await supabase
       .from("Products")
       .select("*");
 
     if (error) throw error;
-
-    return Products as IProduct[];
+    return Products;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getFlavors = async (): Promise<IFlavor[] | undefined> => {
+export const getFlavors = async () => {
   try {
     const { data: Flavors, error } = await supabase.from("Flavors").select("*");
 
@@ -27,7 +26,7 @@ export const getFlavors = async (): Promise<IFlavor[] | undefined> => {
   }
 };
 
-export const getCategory = async (): Promise<ICategory[] | undefined> => {
+export const getCategory = async () => {
   try {
     const { data: Category, error } = await supabase
       .from("Category")
@@ -65,6 +64,42 @@ export const createProduct = async (newProduct: IProduct) => {
     if (error) throw Error;
 
     return NewProduct;
+  } catch (error) {
+    console.log(error, "ayaw");
+  }
+};
+
+export const uploadImage = async (path: string, newImage: File) => {
+  try {
+    const { data: Image, error } = await supabase.storage
+      .from("media")
+      .upload(path, newImage);
+
+    if (error) throw Error;
+
+    return Image;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createFlavor = async (newFlavor: IFlavor) => {
+  const imageName = `${crypto.randomUUID()}-${
+    newFlavor.image_url[0].name
+  }`.replace("/", "");
+  const imagePath = `${supabaseUrl}/storage/v1/object/public/media/${imageName}`;
+
+  try {
+    const uploadedImage = await uploadImage(imageName, newFlavor.image_url[0]);
+
+    if (!uploadedImage) throw Error;
+
+    const { data: NewFlavor, error } = await supabase
+      .from("Flavors")
+      .insert([{ ...newFlavor, image_url: imagePath }])
+      .select();
+    if (error) throw Error;
+    return NewFlavor;
   } catch (error) {
     console.log(error, "ayaw");
   }

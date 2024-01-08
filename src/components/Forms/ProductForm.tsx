@@ -3,8 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
 import { ProductValidation } from "@/lib/validation";
+
 import {
   useCreateProduct,
   useEditProduct,
@@ -46,8 +46,6 @@ const ProductForm = ({
   const { data: flavors } = useGetFlavors();
   const { data: categories } = useGetCategory();
 
-  console.log(editProduct);
-
   const isWorking = isCreating || isEditing;
 
   // 1. Define your form.
@@ -57,11 +55,16 @@ const ProductForm = ({
       ? {
           ...editProduct,
         }
-      : {},
+      : {
+          product_name: "",
+          description: "",
+          flavor_name: "",
+          category_name: "",
+        },
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof ProductValidation>) {
+  function onSubmit(values: z.infer<typeof ProductValidation>) {
     // console.log(values);
     try {
       const { category_name, flavor_name, product_name, description } = values;
