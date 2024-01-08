@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  createFlavor,
   createProduct,
   deleteProduct,
   getCategory,
@@ -41,6 +42,20 @@ export const useDeleteProduct = () => {
       toast({ title: "Product has been deleted successfully!" });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_PRODUCTS],
+      });
+    },
+  });
+};
+
+export const useCreateFlavor = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: createFlavor,
+    onSuccess: () => {
+      toast({ title: "Flavor has been created successfully!" });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_FLAVORS],
       });
     },
   });

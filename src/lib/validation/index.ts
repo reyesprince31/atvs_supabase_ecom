@@ -31,8 +31,13 @@ export const ProductValidation = z.object({
 });
 
 export const FlavorValidation = z.object({
-  name: z.string().min(2, { message: "Name must be atleast 2 characters." }),
-  quantity: z.number(),
-  price: z.number(),
-  imageurl: z.string(),
+  image_url: z.custom<File[]>(),
+  flavor_name: z
+    .string()
+    .min(2, { message: "Name must be atleast 2 characters." }),
+  description: z
+    .string()
+    .min(3, { message: "description must be atleast 3 characters." })
+    .max(2500, { message: "Maximum of 2500 characters" }),
+  flavor_qty: z.string().min(1),
 });

@@ -1,5 +1,4 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { formatCurrency } from "@/lib/utils";
 
 import { ArrowUpDown, Edit, MoreHorizontal, Trash2 } from "lucide-react";
 
@@ -14,29 +13,31 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export type TFlavors = {
-  flavorid?: number;
-  imageurl?: string;
-  name: string;
+  flavorid: number;
+  image_url: string;
+  flavor_name: string;
   description: string;
-  price: number;
-  stockquantity: number;
+  flavor_qty: number;
 };
 
 export const FlavorRow: ColumnDef<TFlavors>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "flavor_name",
     header: () => <div>Flavors</div>,
     cell: ({ row }) => {
-      console.log(row);
       return (
         <div className="block lg:flex lg:items-center gap-2">
           <img
-            src={row.original.imageurl}
+            src={
+              row.original.image_url
+                ? row.original.image_url
+                : "/images/product/product-01.png"
+            }
             alt="product-img"
             width={50}
             height={50}
           />
-          <span>{row.getValue("name")}</span>
+          <span>{row.getValue("flavor_name")}</span>
         </div>
       );
     },
@@ -45,17 +46,9 @@ export const FlavorRow: ColumnDef<TFlavors>[] = [
     accessorKey: "description",
     header: "Description",
   },
-  {
-    accessorKey: "price",
-    header: () => <div>Price</div>,
-    cell: ({ row }) => {
-      const price = parseFloat(row.getValue("price"));
 
-      return <div className="font-medium">{formatCurrency(price)}</div>;
-    },
-  },
   {
-    accessorKey: "stockquantity",
+    accessorKey: "flavor_qty",
     header: ({ column }) => {
       return (
         <div className="text-right">
@@ -71,19 +64,19 @@ export const FlavorRow: ColumnDef<TFlavors>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="text-right mr-4">{row.getValue("stockquantity")}</div>
+      <div className="text-right mr-4">{row.getValue("flavor_qty")} pcs</div>
     ),
   },
-
   {
     id: "actions",
+    enableHiding: false,
     cell: () => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost">
+            <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4" />
+              <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
