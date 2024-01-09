@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { AlertDialogDemo } from "../AlertDialog";
-import { AlertDialogTrigger, AlertDialog } from "@/components/ui/alert-dialog";
+import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Actions } from "./Actions";
 
 export type TFlavors = {
@@ -80,7 +80,7 @@ export const FlavorRow: ColumnDef<TFlavors>[] = [
       const { handleDelete } = Actions(flavor.flavor_id);
 
       return (
-        <AlertDialog>
+        <>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
@@ -111,7 +111,7 @@ export const FlavorRow: ColumnDef<TFlavors>[] = [
             </DropdownMenuContent>
           </DropdownMenu>
           <AlertDialogDemo deleteFn={handleDelete} />
-        </AlertDialog>
+        </>
       );
     },
   },

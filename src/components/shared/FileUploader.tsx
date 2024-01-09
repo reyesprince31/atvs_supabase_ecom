@@ -49,9 +49,9 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
           <p className="file_uploader-label">Click or drag photo to replace</p>
         </>
       ) : (
-        <div className="file_uploader-box ">
+        <div className="file_uploader-box">
           <img
-            src="/assets/icons/file-upload.svg"
+            src="/images/logo/file-upload.svg"
             width={96}
             height={77}
             alt="file upload"
@@ -62,7 +62,7 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
           </h3>
           <p className="text-light-4 small-regular mb-6">SVG, PNG, JPG</p>
 
-          <Button type="button" className="shad-button_dark_4">
+          <Button type="button" variant="ghost">
             Select from computer
           </Button>
         </div>
