@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createFlavor,
   createProduct,
+  deleteFlavor,
   deleteProduct,
   getCategory,
   getFlavors,
@@ -12,6 +13,7 @@ import { QUERY_KEYS } from "./queryKeys";
 import { IProduct } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
 
+//Create Queries
 export const useGetProducts = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_PRODUCTS],
@@ -33,6 +35,7 @@ export const useGetCategory = () => {
   });
 };
 
+//Delete Queries
 export const useDeleteProduct = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -40,6 +43,36 @@ export const useDeleteProduct = () => {
     mutationFn: deleteProduct,
     onSuccess: () => {
       toast({ title: "Product has been deleted successfully!" });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_PRODUCTS],
+      });
+    },
+  });
+};
+
+export const useDeleteFlavor = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteFlavor,
+    onSuccess: () => {
+      toast({ title: "Flavor has been deleted successfully!" });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_FLAVORS],
+      });
+    },
+  });
+};
+
+//Create Queries
+
+export const useCreateProduct = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: createProduct,
+    onSuccess: () => {
+      toast({ title: "Product has been created successfully!" });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_PRODUCTS],
       });
@@ -61,20 +94,7 @@ export const useCreateFlavor = () => {
   });
 };
 
-export const useCreateProduct = () => {
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: createProduct,
-    onSuccess: () => {
-      toast({ title: "Product has been created successfully!" });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_PRODUCTS],
-      });
-    },
-  });
-};
-
+//Update Queries
 export const useEditProduct = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();

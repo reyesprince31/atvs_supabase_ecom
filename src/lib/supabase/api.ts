@@ -40,6 +40,8 @@ export const getCategory = async () => {
   }
 };
 
+//Delete APi's
+
 export const deleteProduct = async (id: number) => {
   try {
     const { error } = await supabase
@@ -48,6 +50,35 @@ export const deleteProduct = async (id: number) => {
       .eq("product_id", id);
 
     if (error) throw Error;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteFlavor = async (id: number) => {
+  try {
+    const { error } = await supabase
+      .from("Flavors")
+      .delete()
+      .eq("flavor_id", id);
+
+    if (error) throw Error;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//Create APi's
+
+export const uploadImage = async (path: string, newImage: File) => {
+  try {
+    const { data: Image, error } = await supabase.storage
+      .from("media")
+      .upload(path, newImage);
+
+    if (error) throw Error;
+
+    return Image;
   } catch (error) {
     console.log(error);
   }
@@ -69,20 +100,6 @@ export const createProduct = async (newProduct: IProduct) => {
   }
 };
 
-export const uploadImage = async (path: string, newImage: File) => {
-  try {
-    const { data: Image, error } = await supabase.storage
-      .from("media")
-      .upload(path, newImage);
-
-    if (error) throw Error;
-
-    return Image;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const createFlavor = async (newFlavor: IFlavor) => {
   const imageName = `${crypto.randomUUID()}-${
     newFlavor.image_url[0].name
@@ -92,18 +109,29 @@ export const createFlavor = async (newFlavor: IFlavor) => {
   try {
     const uploadedImage = await uploadImage(imageName, newFlavor.image_url[0]);
 
-    if (!uploadedImage) throw Error;
+    if (!uploadedImage) {
+      await supabase
+        .from("Products")
+        .delete()
+        .eq("product_id", newFlavor.flavor_id);
+
+      throw new Error("Failed to upload image, New Flavor was not created!");
+    }
 
     const { data: NewFlavor, error } = await supabase
       .from("Flavors")
       .insert([{ ...newFlavor, image_url: imagePath }])
       .select();
+
     if (error) throw Error;
+
     return NewFlavor;
   } catch (error) {
     console.log(error, "ayaw");
   }
 };
+
+//UPDATE APi's
 
 export const updateProduct = async (
   newProduct: IProduct,

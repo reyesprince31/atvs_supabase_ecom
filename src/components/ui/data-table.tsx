@@ -32,6 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
+import { DialogTrigger } from "@/components/ui/dialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -162,9 +163,11 @@ export function DataTable<TData, TValue>({
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div> */}
-        <div>
-          <Button size="sm">Create</Button>
-        </div>
+
+        <DialogTrigger asChild>
+          <Button>Create</Button>
+        </DialogTrigger>
+
         <div className="space-x-2">
           <Button
             variant="outline"
