@@ -12,8 +12,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { AlertDialogDemo } from "../AlertDialog";
+import { AlertDialogTrigger, AlertDialog } from "@/components/ui/alert-dialog";
+import { Actions } from "./Actions";
+
 export type TFlavors = {
-  flavorid: number;
+  flavor_id: number;
   image_url: string;
   flavor_name: string;
   description: string;
@@ -70,36 +74,44 @@ export const FlavorRow: ColumnDef<TFlavors>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: () => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
+    cell: ({ row }) => {
+      const flavor = row.original;
 
-            <DropdownMenuItem
-              className="space-x-2"
-              onClick={() => console.log("Duplicate")}>
-              <Edit className="h-4 w-4" /> <span>Duplicate</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="space-x-2"
-              onClick={() => console.log("Edit")}>
-              <Edit className="h-4 w-4" /> <span>Edit</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="space-x-2"
-              onClick={() => console.log("Delete")}>
-              <Trash2 className="h-4 w-4" /> <span>Delete</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      const { handleDelete } = Actions(flavor.flavor_id);
+
+      return (
+        <AlertDialog>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                className="space-x-2"
+                onClick={() => console.log("Duplicate")}>
+                <Edit className="h-4 w-4" /> <span>Duplicate</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="space-x-2"
+                onClick={() => console.log("Edit")}>
+                <Edit className="h-4 w-4" /> <span>Edit</span>
+              </DropdownMenuItem>
+              <AlertDialogTrigger asChild>
+                <DropdownMenuItem className="space-x-2">
+                  <Trash2 className="h-4 w-4" />
+                  <span>Delete</span>
+                </DropdownMenuItem>
+              </AlertDialogTrigger>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <AlertDialogDemo deleteFn={handleDelete} />
+        </AlertDialog>
       );
     },
   },

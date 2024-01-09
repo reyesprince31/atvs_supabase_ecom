@@ -1,4 +1,5 @@
 import FlavorForm from "@/components/Forms/FlavorForm";
+
 import Loader from "@/components/shared/Loader";
 import { FlavorRow as columns } from "@/components/shared/flavors/FlavorRow";
 
