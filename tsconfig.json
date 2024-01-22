@@ -5,6 +5,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "types": ["vitest/globals"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -26,6 +27,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "src/vite-env.d.ts"],
+  "include": ["src", "src/vite-env.d.ts", "src/test/setup.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
